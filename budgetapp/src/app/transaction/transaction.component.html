@@ -1,3 +1,23 @@
-<!--&lt;!&ndash;<h2> {{transaction.memo}} Memo </h2>&ndash;&gt;-->
-<!--<div><span> id: </span>{{transaction.transaction_id}}</div>-->
-<!--<div><span> amount: </span>{{transaction.amount}}</div>-->
+<h2>TRANSACTIONS</h2>
+<ul class="transactions">
+  <li *ngFor="let transaction of transactions"
+      [class.selected]="transaction === selectedTransaction"
+      (click)="onSelect(transaction)">
+    <a routerLink="user/{{transaction.transactionId}}">
+      <span class="badge">{{transaction.transactionId}}</span> {{transaction.memo}}
+    </a>
+  </li>
+</ul>
+
+<div *ngIf="selectedTransaction">
+
+  <h2>{{selectedTransaction.memo}} Details</h2>
+  <div><span>id: </span>{{selectedTransaction.transactionId}}</div>
+  <div><span>memo: </span>{{selectedTransaction.memo}}</div>
+  <div><span>transaction type: </span>{{selectedTransaction.transactionType}}</div>
+  <div><span>amount: </span>{{selectedTransaction.amount}}</div>
+  <div><span>from: </span>{{selectedTransaction.fromAccountId}}</div>
+  <div><span>to: </span>{{selectedTransaction.toAccountId}}</div>
+  <div><span>transactionDt: </span>{{selectedTransaction.transactionDt}}</div>
+
+</div>

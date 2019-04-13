@@ -11,7 +11,7 @@ import { MessageService } from './message.service';
 export class UserService {
   private userUrl = 'http://localhost:8080/budget/user';
   private log(message: string) {
-    this.messageService.add(`HeroService: ${message}`);
+    this.messageService.add(`UserService: ${message}`);
   }
 
   constructor(private http: HttpClient,

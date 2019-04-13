@@ -1,34 +1,42 @@
 import { Injectable } from '@angular/core';
-
-import { HttpClient, HttpHeaders } from '@angular/common/http';
- 
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
- 
-import { Transaction } from './transaction';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+import { HttpClient } from '@angular/common/http';
+import {Observable, of} from 'rxjs';
+import {Transaction} from './transaction';
+import {tap, catchError} from 'rxjs/operators';
+import {MessageService} from './message.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-
-
-  constructor(private http: HttpClient) { }
-
-//  private transactionUrl = 'http://localhost:8080/budget/transcation';
-
-  //getTransactions(transaction: Transaction): Observable<Transaction[]> {
-  getTransactions(): Observable<Transaction[]> {
-       console.log('Provider made');
-     this.http.get('http://localhost:8080/budget/transaction/').subscribe(data => {
-     console.log(data); })
-
-  	// return this.http.get<Transaction[]>($this.transactionUrl});
-  	return null;
+  private transactionUrl = 'http://localhost:8080/budget/transaction/';
+  private log(message: string) {
+    this.messageService.add(`TransactionService: ${message}`);
   }
-	
+
+  constructor(private httpTransaction: HttpClient,
+              private messageService: MessageService
+  ) { }
+  getTransactions(): Observable<Transaction[]> {
+    return this.httpTransaction.get<Transaction[]>(this.transactionUrl)
+      .pipe(
+        tap(_ => this.log('Transaction Data')),
+        catchError(this.handleError<Transaction[]>('getTransactions', []))
+      );
+  }
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      console.log(`${operation} failed: ${error.message}`);
+      return of(result as T);
+    };
+  }
+  getTransaction(id: number): Observable<Transaction> {
+    const url = `${this.transactionUrl}/{id}`;
+    return this.httpTransaction.get<Transaction>(url)
+      .pipe(
+        tap(_ => this.log(`fetched transaction id=${id}`)),
+        catchError(this.handleError<Transaction>(`getTransaction id=${id}`))
+      );
+  }
 }
