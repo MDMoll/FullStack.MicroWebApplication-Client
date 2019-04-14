@@ -60,7 +60,7 @@
 }
 .transactions li {
   cursor: pointer;
-  position: relative;
+  position: center;
   left: 0;
   background-color: #EEE;
   margin: .5em;
