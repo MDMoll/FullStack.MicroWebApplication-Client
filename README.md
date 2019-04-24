@@ -1,3 +1,4 @@
+![ZipBudget Splash Screen}(https://github.com/MDMoll/Zip-Budget-Client/blob/master/ZBLogoMin.png)
 **ZipBudget on Heroku:**
 https://budgetapp-client.herokuapp.com/
 * **Server Repo:** https://github.com/fenniless/FullStack.MicroWebApplication-Server.git
